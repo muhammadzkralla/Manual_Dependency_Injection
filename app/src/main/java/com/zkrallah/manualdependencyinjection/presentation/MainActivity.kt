@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import com.zkrallah.manualdependencyinjection.App
 import com.zkrallah.manualdependencyinjection.databinding.ActivityMainBinding
 import com.zkrallah.manualdependencyinjection.di.AppContainer
-import com.zkrallah.manualdependencyinjection.di.factory.ItemContainer
+import com.zkrallah.manualdependencyinjection.di.ItemContainer
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -24,13 +24,9 @@ class MainActivity : AppCompatActivity() {
         appContainer = (application as App).appContainer
 
         /**
-         * AppContainer gets complicated when you want to
-         * include more functionality in the project.
-         * When your app becomes larger and you start
-         * introducing different feature flows, make
-         * a container for each flow.
+         * Introducing UseCases.
          */
-        appContainer.itemContainer = ItemContainer(appContainer.repository)
+        appContainer.itemContainer = ItemContainer(appContainer.getItemsUseCase)
         viewModel = appContainer.itemContainer!!.mainViewModelFactory.create()
 
         viewModel.getItems()
