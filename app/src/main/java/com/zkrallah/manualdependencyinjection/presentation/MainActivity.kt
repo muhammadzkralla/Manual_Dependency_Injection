@@ -4,9 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.zkrallah.manualdependencyinjection.data.remote.API
-import com.zkrallah.manualdependencyinjection.data.remote.ApiService
-import com.zkrallah.manualdependencyinjection.data.repo.RepositoryImpl
+import com.zkrallah.manualdependencyinjection.App
 import com.zkrallah.manualdependencyinjection.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
 import kotlin.random.Random
@@ -21,14 +19,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         /**
-         * In order to create the ViewModel instance, you had to
-         * create a Repository instance, which takes an instance of the
-         * ApiService interface. We just want to create the ViewModel
-         * instance without the hassle of creating the other instances.
+         * Now we are just creating the ViewModel instance without the
+         * hassle of creating the other instances it requires.
          */
-        val apiService = API.retrofit.create(ApiService::class.java)
-        val repository = RepositoryImpl(apiService)
-        val viewModel = MainViewModel(repository)
+        val appContainer = (application as App).appContainer
+        val viewModel = MainViewModel(appContainer.repository)
 
         viewModel.getItems()
 
