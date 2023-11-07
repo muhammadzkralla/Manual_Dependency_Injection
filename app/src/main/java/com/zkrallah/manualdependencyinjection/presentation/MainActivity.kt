@@ -6,26 +6,32 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.zkrallah.manualdependencyinjection.App
 import com.zkrallah.manualdependencyinjection.databinding.ActivityMainBinding
+import com.zkrallah.manualdependencyinjection.di.AppContainer
+import com.zkrallah.manualdependencyinjection.di.factory.ItemContainer
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var appContainer: AppContainer
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        appContainer = (application as App).appContainer
 
         /**
-         * Using the MainViewModelFactory, If MainViewModelFactory
-         * is needed in more places in the application,
-         * having a centralized place where you
-         * create instances of MainViewModelFactory makes sense.
+         * AppContainer gets complicated when you want to
+         * include more functionality in the project.
+         * When your app becomes larger and you start
+         * introducing different feature flows, make
+         * a container for each flow.
          */
-        val appContainer = (application as App).appContainer
-        val viewModel = appContainer.mainViewModelFactory.create()
+        appContainer.itemContainer = ItemContainer(appContainer.repository)
+        viewModel = appContainer.itemContainer!!.mainViewModelFactory.create()
 
         viewModel.getItems()
 
@@ -38,5 +44,10 @@ class MainActivity : AppCompatActivity() {
                 Glide.with(this@MainActivity).load(response?.get(i)?.image).into(binding.image)
             }
         }
+    }
+
+    override fun onDestroy() {
+        appContainer.itemContainer = null
+        super.onDestroy()
     }
 }
