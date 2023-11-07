@@ -19,11 +19,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         /**
-         * Now we are just creating the ViewModel instance without the
-         * hassle of creating the other instances it requires.
+         * Using the MainViewModelFactory, If MainViewModelFactory
+         * is needed in more places in the application,
+         * having a centralized place where you
+         * create instances of MainViewModelFactory makes sense.
          */
         val appContainer = (application as App).appContainer
-        val viewModel = MainViewModel(appContainer.repository)
+        val viewModel = appContainer.mainViewModelFactory.create()
 
         viewModel.getItems()
 
