@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zkrallah.manualdependencyinjection.data.repo.RepositoryImpl
-import com.zkrallah.manualdependencyinjectiondemo.domain.model.Response
+import com.zkrallah.manualdependencyinjection.domain.model.Response
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

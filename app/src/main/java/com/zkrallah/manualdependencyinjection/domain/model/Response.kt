@@ -1,6 +1,4 @@
-package com.zkrallah.manualdependencyinjectiondemo.domain.model
-
-import com.zkrallah.manualdependencyinjection.domain.model.Rating
+package com.zkrallah.manualdependencyinjection.domain.model
 
 data class Response(
     val category: String,
