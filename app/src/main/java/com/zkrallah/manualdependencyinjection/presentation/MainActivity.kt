@@ -2,33 +2,28 @@ package com.zkrallah.manualdependencyinjection.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.zkrallah.manualdependencyinjection.App
 import com.zkrallah.manualdependencyinjection.databinding.ActivityMainBinding
-import com.zkrallah.manualdependencyinjection.di.AppContainer
-import com.zkrallah.manualdependencyinjection.di.ItemContainer
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.random.Random
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var appContainer: AppContainer
     private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        appContainer = (application as App).appContainer
 
         /**
-         * Introducing UseCases.
+         * Making it automatic with Dagger Hilt.
          */
-        appContainer.itemContainer = ItemContainer(appContainer.getItemsUseCase)
-        viewModel = appContainer.itemContainer!!.mainViewModelFactory.create()
-
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.getItems()
 
         lifecycleScope.launch {
@@ -40,10 +35,5 @@ class MainActivity : AppCompatActivity() {
                 Glide.with(this@MainActivity).load(response?.get(i)?.image).into(binding.image)
             }
         }
-    }
-
-    override fun onDestroy() {
-        appContainer.itemContainer = null
-        super.onDestroy()
     }
 }

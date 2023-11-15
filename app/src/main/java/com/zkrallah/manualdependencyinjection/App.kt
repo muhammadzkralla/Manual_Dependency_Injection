@@ -1,8 +1,7 @@
 package com.zkrallah.manualdependencyinjection
 
 import android.app.Application
-import com.zkrallah.manualdependencyinjection.di.AppContainer
+import dagger.hilt.android.HiltAndroidApp
 
-class App : Application() {
-    val appContainer = AppContainer()
-}
+@HiltAndroidApp
+class App : Application()

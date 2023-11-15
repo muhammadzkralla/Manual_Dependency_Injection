@@ -5,12 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zkrallah.manualdependencyinjection.domain.model.Response
 import com.zkrallah.manualdependencyinjection.domain.usecase.GetItems
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-
-class MainViewModel(private val getItemsUseCase: GetItems) : ViewModel() {
+import javax.inject.Inject
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val getItemsUseCase: GetItems
+) : ViewModel() {
 
     private val _items: MutableStateFlow<List<Response?>?> = MutableStateFlow(null)
     val items: StateFlow<List<Response?>?> = _items
